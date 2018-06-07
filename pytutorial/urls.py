@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^discover/', login_required(views.discover)),
     url(r'^timeline/',
         login_required(views.TimelineView.as_view())),
+    url(r'^singlepost/', login_required(views.SinglePostView.as_view())),
     url(r'^user/(?P<user_name>.+)/$', views.user),
     url(r'^hashtag/(?P<hashtag_name>.+)/', views.hashtag),
     url(r'^$', views.HomeView.as_view()),

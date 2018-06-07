@@ -16,6 +16,7 @@ class Tweet(activity.Activity, models.Model):
         'auth.User', on_delete=models.SET(get_sentinel_user))
     text = models.CharField(max_length=160)
     created_at = models.DateTimeField(auto_now_add=True)
+    # todo: can add an image field here to display
 
     @property
     def print_self(self):

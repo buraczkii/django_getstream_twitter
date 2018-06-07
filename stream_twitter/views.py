@@ -8,7 +8,7 @@ from stream_twitter.forms import FollowForm
 from stream_twitter.models import Follow
 from stream_twitter.models import Tweet, Hashtag
 from pytutorial import settings
-
+import random
 
 enricher = Enrich()
 
@@ -50,6 +50,24 @@ class HomeView(CreateView):
             'users': User.objects.order_by('date_joined')[:50]
         }
         return render(request, 'stream_twitter/home.html', context)
+
+
+class SinglePostView(CreateView):
+    model = Tweet
+    fields = ['text']
+    #success_url = "/singlepost/"
+
+    def get(self, request):
+        feeds = feed_manager.get_news_feeds(request.user.id) # can change this to pull posts based on some other qualifier
+        activities = feeds.get('timeline').get()['results']
+        activities = enricher.enrich_activities(activities)
+        activity = random.SystemRandom().choice(activities) #SystemRandom is for cryptographically secure randomness
+        context = {
+            'activity': activity,
+            'login_user': request.user
+        }
+        return render(request, 'stream_twitter/singlepost.html', context)
+
 
 
 def follow(request):
